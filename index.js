@@ -34,10 +34,6 @@ app.get("/names", async (req, res) => {
   }
 });
 
-app.listen(5001, () => {
-  console.log("server has started on port 5001");
-});
-
 // Get specific data from database
 app.get("/names/:id", async (req, res) => {
   try {
@@ -50,4 +46,24 @@ app.get("/names/:id", async (req, res) => {
   } catch (error) {
     console.error(err.message);
   }
+});
+
+// Update data in database based on ID number
+app.put("/names/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { first_name } = req.body;
+    const updateName = await pool.query(
+      "UPDATE names SET first_name = $1 WHERE name_id = $2",
+      [first_name, id]
+    );
+
+    res.json("Name was successfully Updated!");
+  } catch (error) {
+    console.error(err.message);
+  }
+});
+
+app.listen(5001, () => {
+  console.log("server has started on port 5001");
 });
