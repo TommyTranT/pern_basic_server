@@ -10,20 +10,29 @@ app.use(express.json());
 //ROUTES//
 
 // Adding data to database
-app.post("/post", async (req, res) => {
+app.post("/names", async (req, res) => {
   try {
     const { first_name } = req.body;
-    const newPost = await pool.query(
-      "INSERT INTO names (first_name) VALUES($1)",
+    const newName = await pool.query(
+      "INSERT INTO names (first_name) VALUES($1) RETURNING *",
       [first_name]
     );
 
-    res.json(newPost);
+    res.json(newName.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
-
 app.listen(5001, () => {
   console.log("server has started on port 5001");
+});
+
+// Get all data from database
+app.get("/names", async (req, res) => {
+  try {
+    const allNames = await pool.query("SELECT * FROM names");
+    res.json(allNames.rows);
+  } catch (error) {
+    console.error(err.message);
+  }
 });
