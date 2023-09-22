@@ -64,6 +64,21 @@ app.put("/names/:id", async (req, res) => {
   }
 });
 
+// Delete data from database
+app.delete("/names/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteName = await pool.query(
+      "DELETE FROM names WHERE name_id = $1",
+      [id]
+    );
+
+    res.json("Name was deleted");
+  } catch (error) {
+    console.error(err.message);
+  }
+});
+
 app.listen(5001, () => {
   console.log("server has started on port 5001");
 });
