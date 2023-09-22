@@ -23,9 +23,6 @@ app.post("/names", async (req, res) => {
     console.error(err.message);
   }
 });
-app.listen(5001, () => {
-  console.log("server has started on port 5001");
-});
 
 // Get all data from database
 app.get("/names", async (req, res) => {
@@ -35,4 +32,8 @@ app.get("/names", async (req, res) => {
   } catch (error) {
     console.error(err.message);
   }
+});
+
+app.listen(5001, () => {
+  console.log("server has started on port 5001");
 });
