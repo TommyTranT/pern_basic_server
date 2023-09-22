@@ -37,3 +37,17 @@ app.get("/names", async (req, res) => {
 app.listen(5001, () => {
   console.log("server has started on port 5001");
 });
+
+// Get specific data from database
+app.get("/names/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const name = await pool.query("SELECT * FROM names WHERE name_id = $1", [
+      id,
+    ]);
+
+    res.json(name.rows[0]);
+  } catch (error) {
+    console.error(err.message);
+  }
+});
